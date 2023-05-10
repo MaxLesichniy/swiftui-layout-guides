@@ -253,6 +253,26 @@ struct LayoutGuidesModifier: ViewModifier {
       var onLayoutMarginsGuideChange: (EdgeInsets) -> Void = { _ in }
       var onReadableContentGuideChange: (EdgeInsets) -> Void = { _ in }
 
+      override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+      }
+      
+      required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+      }
+      
+      private func commonInit() {
+        preservesSuperviewLayoutMargins = true
+      }
+      
+      override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        // setup for host view SwiftUI.PlatformViewHost<SwiftUI.PlatformViewRepresentableAdaptor<SwiftUILayoutGuides.LayoutGuides>>
+        superview?.preservesSuperviewLayoutMargins = true
+      }
+        
       override func layoutMarginsDidChange() {
         super.layoutMarginsDidChange()
         updateLayoutMargins()
